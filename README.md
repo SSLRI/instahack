@@ -25,64 +25,94 @@
 ## ABOUT :
 
 instahack is a bash based script which is officially made to test password strength of instagram account from termux with bruteforce attack and. This tool works on both rooted Android device and Non-rooted Android device. this script can bypass login limiting and it can test infinite number of passwords with a rate of about 1000 passwords/min with 100 attemps at once. 
+------
+ How?
+------
 
-## AVAILABLE ON ✣ TESTED ON  :
+| We use , **tor** to change our ip once blocked for many tries and continue attack.
+| Since the official api is not a hacker wants, So we use the **InstagramAPK signature** to stay **anonymous!**
+| And we also **save** the **progress** so that even in network interruption we can avoid breaking the computer!
 
-* ✪ Termux
+ **See the 'Algorimthm' section down below for more hackery!**
 
-### REQUIREMENTS :
-* internet
-* php
-* storage 400 MB
-* ngrok Token
+-------
+ What?
+-------
+
+| **Instahack** is a slick bash script to perform  **brute force** attack against **Instagram** ,   
+| this script can **bypass** login limiting on wrong passwords ,  so basically it can test **infinite number of passwords**.
+| Instahack is **proved** and can test **over 6M** passwords on a single instagram account with **less resource** as possible
+| This script mimics the activities of the official **instagram android app** and sends request over **tor** so you are secure ,
+| but if your **tor** installation is **misconfigured** then the blame is on you.
+
+------------
+ Features
+------------
+
+* instahack Scripting
+
+* Resumes Attacks when the same wordlist is used on the same Username
+* Dumps successfully cracked accounts in the dump
+* Maximum Customization! ( This includes multiple attack vectors! )
+* Fast and Clean Code , no ugly selenum drivers! ( Pure Requests )
+* Elegant Tor Identity Change with Stem ( Tor's Official Library for Python )
+
+
+**Depends on**:to r ,  requests , requests[socks] , stem
+
+### TESTED ON :
+
+* Termux
+* Kali Linux
 
 ## FEATURES :
-* [+]Instagram stable api !
-* [+] Updated maintainence !
-* [+] tor usage !
-* [+] Easy for Beginners !
+- Insta OSINT !
+- Insta Bruteforce !
+- Instagram stable api !
+- Multi Thrading
+- Twitter Bruteforce
+- Updated maintainence !
+- tor usage !
+- Easy for Beginners !
 
-## INSTALLATION [Termux]ッ :
+## REQUIREMENTS
 
-* `apt-get update -y`
-* `apt-get upgrade -y`
-* `pkg install python -y`
-* `pkg install python2 -y`
-* `pkg install git -y`
-* `pip install lolcat`
-* `git clone https://github.com/sslri/instahack`
-* `cd $HOME`
-* `ls`
-* `cd instahack`
-* `ls`
-* `bash setup`
-* `bash instahack.sh`
 ```
-[+]--Now you need internet connection to continue further process...
-
-[+]--You can select any option by clicking on your keyboard
-
-[+]--Note:- Don't delete any of the scripts included in core files
-
-[+]--new session and start TOR (tor) before starting the attack
+$ sudo easy_install3 -U pip # you have to install python3-setuptools , update pip
+$ sudo pip3 install requests --upgrade
+$ sudo pip3 install requests[socks]
+$ sudo pip3 install stem
 ```
-## USAGE OPTIONS [Termux] :
 
-__AUTO ATTACK__ :
-- From this option you can start attack aon default pass list of tool.
+### INSTALLATION:
+```
+wget https://raw.githubusercontent.com/SSLRI/instahack/master/setup.sh && bash setup.sh
+```
 
-__MANUAL ATTACK__ :
-- From this option you can select manual pass list and try to attack.
+### USAGE OPTIONS :
+- Now you need internet connection to continue further process...
+- You can select any option by clicking on your keyboard
+- Note:- Don't delete any of the scripts included in core files
+- new session and start TOR (tor) before starting the attack
 
-__ABOUT__ :
-- From this option you can know more about author.
+### OPTIONS:
 
-__UPDATE__ :
-- From this option you can update instahack tool if updates are available for that.
+- INFORMATION GATHERING:
+    - From this option you can gather information about your target
 
-__EXIT__ :
-- From this option you can exit from tool 
+- AUTO ATTACK:
+  -  From this option you can start attack aon default pass list of tool.
 
+- MANUAL ATTACK:
+    - From this option you can select manual pass list and try to attack.
+
+- UPDATE:
+  - From this option you can update instahack tool if updates are available for that.
+
+- EXIT:
+  - From this option you can exit from tool 
+
+and many more options...
 
 ## CONNECT WITH US :
 

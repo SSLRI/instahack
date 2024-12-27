@@ -4,7 +4,7 @@
 # The shell / bash script that updates the InstaHack tool that had already been set up in your computer system. It just fetches te newer version of the project's repository at the github mirror (https://github.com/evildevill/instahack/). The script can be launched directly, but the codes are written in such a way that the script can only be used inside the main script file for the tool i.e., 'instahack.sh'.
 #
 # Author : SSLRI (https://github.com/sslri/)
-# Created on : June 28, 2020
+# Created on : March 09, 2024
 #
 #
 # Changes made in the last modification :
