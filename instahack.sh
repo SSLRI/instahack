@@ -9,13 +9,13 @@ github_user="SSLRI"
 github_repo="instahack"
 
 # Function to download file from GitHub
-download_file() {
-    local file_url="$1"
-    local destination="$2"
-    echo "Downloading: $file_url" | tee -a "$log"
-    curl -s "$file_url" -o "$destination"
-    echo "Download finished for: $destination" | tee -a "$log"
-}
+# download_file() {
+#     local file_url="$1"
+#     local destination="$2"
+#     echo "Downloading: $file_url" | tee -a "$log"
+#     curl -s "$file_url" -o "$destination"
+#     echo "Download finished for: $destination" | tee -a "$log"
+# }
 
 # Function to execute a command and log output
 execute_command() {
@@ -38,53 +38,53 @@ get_random_number() {
 for i in $(seq 1 5); do
     echo "Step $i"
     if [[ $i -eq 1 ]]; then
-        # Step 1: Get user list from github
+        # Step 1: Get user list
         echo "Fetching user list..."
         user_file="userlist.txt"
-        user_url="https://raw.githubusercontent.com/$github_user/$github_repo/master/users.txt"
+        # user_url="https://raw.githubusercontent.com/$github_user/$github_repo/master/users.txt"
 
-        download_file "$user_url" "$user_file"
+        # download_file "$user_url" "$user_file"
     
         if [[ -f "$user_file" ]]; then
-          echo "User file downloaded successfully."
+          echo "User file loaded successfully."
            user_count=$(wc -l < "$user_file")
            echo "Total users: $user_count"
         else
-          echo "Error downloading user file."
+          echo "Error: user file not found. Please create 'userlist.txt' in the same directory as this script."
           exit 1
         fi
 
     elif [[ $i -eq 2 ]]; then
-        # Step 2: Get password list from github
+        # Step 2: Get password list
         echo "Fetching password list..."
         pass_file="passlist.txt"
-        pass_url="https://raw.githubusercontent.com/$github_user/$github_repo/master/passwords.txt"
+        # pass_url="https://raw.githubusercontent.com/$github_user/$github_repo/master/passwords.txt"
     
-        download_file "$pass_url" "$pass_file"
+        # download_file "$pass_url" "$pass_file"
             
         if [[ -f "$pass_file" ]]; then
-          echo "Password file downloaded successfully."
+          echo "Password file loaded successfully."
            pass_count=$(wc -l < "$pass_file")
            echo "Total passwords: $pass_count"
         else
-          echo "Error downloading password file."
+           echo "Error: password file not found. Please create 'passlist.txt' in the same directory as this script."
           exit 1
         fi
     elif [[ $i -eq 3 ]]; then
-        # Step 3: Get Proxy List from GitHub
+        # Step 3: Get Proxy List
       echo "Fetching proxy list..."
       proxy_file="proxy.txt"
-      proxy_url="https://raw.githubusercontent.com/$github_user/$github_repo/master/proxy.txt"
+      # proxy_url="https://raw.githubusercontent.com/$github_user/$github_repo/master/proxy.txt"
     
-      download_file "$proxy_url" "$proxy_file"
+      # download_file "$proxy_url" "$proxy_file"
 
       if [[ -f "$proxy_file" ]]; then
-        echo "Proxy file downloaded successfully."
+        echo "Proxy file loaded successfully."
         proxy_count=$(wc -l < "$proxy_file")
         echo "Total proxies: $proxy_count"
       else
-        echo "Error downloading proxy file."
-        exit 1
+        echo "Proxy file not found. Please create 'proxy.txt' in the same directory as this script. This file can be empty if you don't have proxy."
+        
       fi
     elif [[ $i -eq 4 ]]; then
         # Step 4: Generate random user and password combinations for testing
