@@ -1,11 +1,10 @@
 import time
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException, TimeoutException
 import logging
+from instagrapi import Client
+from instagrapi.exceptions import ClientLoginRequired, LoginRequired
 
 # Configure logging
-logging.basicConfig(filename='instahack.log', level=logging.ERROR, 
+logging.basicConfig(filename='instahack.log', level=logging.ERROR,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 def get_user_credentials():
@@ -18,30 +17,18 @@ def get_user_credentials():
 
 def login_to_instagram(username, password):
     """
-    لاگین به اینستاگرام با استفاده از نام کاربری و رمز عبور.
+    لاگین به اینستاگرام با استفاده از کتابخانه instagrapi.
     """
     try:
-        browser = webdriver.Chrome()
-        browser.get("https://www.instagram.com/")
-        time.sleep(3)
+        client = Client()
+        client.login(username, password)
+        return client  # Return the client object
 
-        username_input = browser.find_element(By.NAME, "username")
-        password_input = browser.find_element(By.NAME, "password")
-
-        username_input.send_keys(username)
-        password_input.send_keys(password)
-
-        login_button = browser.find_element(By.XPATH, "//button[@type='submit']")
-        login_button.click()
-        time.sleep(5)
-
-        return browser  # Return the browser object for later use
-
-    except NoSuchElementException as e:
-        logging.error(f"Could not find element on the page. {e}")
+    except ClientLoginRequired as e:
+        logging.error(f"Login required. Please check your credentials or use 2FA. {e}")
         return None
-    except TimeoutException as e:
-        logging.error(f"Timeout while waiting for page to load. {e}")
+    except LoginRequired as e:
+        logging.error(f"Login required. Please check your credentials. {e}")
         return None
     except Exception as e:
         logging.error(f"An unexpected error occurred during login: {e}")
@@ -49,28 +36,16 @@ def login_to_instagram(username, password):
 
 def main():
     username, password = get_user_credentials()
-    browser = login_to_instagram(username, password)
-    if browser is None:
+    client = login_to_instagram(username, password)
+    if client is None:
         print("Login failed. Please check your credentials.")
         return  # Exit the program if login fails
 
     try:
-        browser.get(f"https://www.instagram.com/{username}/followers/")
-        time.sleep(3)
+        user_id = client.user_id_from_username(username)
+        followers = client.user_followers(user_id)
+        names = [user.username for user in followers.values()]  # Extract usernames
 
-        scroll_box = browser.find_element(By.XPATH, '/html/body/div[2]/div/div/div[2]/div/div/div[1]/div/div[2]/div/div/div/div/div[2]/div/div/div[2]')
-        last_ht, ht = 0, 1
-        while last_ht != ht:
-            last_ht = ht
-            time.sleep(1)
-            ht = browser.execute_script("""
-                arguments[0].scrollTo(0, arguments[0].scrollHeight);
-                return arguments[0].scrollHeight;
-                """, scroll_box)
-        
-        links = scroll_box.find_elements(By.TAG_NAME, 'a')
-        names = [name.text for name in links if name.text != '' and name.text != 'Follow']
-        browser.close()
         print(names)
 
         with open('followers.txt', 'w', encoding='UTF-8') as file:
@@ -79,10 +54,11 @@ def main():
         print('names saved in followers.txt')
 
     except Exception as e:
-        print(f"Error: {e}")
-        if browser:
-            browser.quit()
+        logging.error(f"Error: {e}")
 
+    finally:
+        # No need to close the browser, as we're not using Selenium anymore
+        pass
 
 if __name__ == "__main__":
     main()
