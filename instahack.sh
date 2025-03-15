@@ -1,6 +1,12 @@
 import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException, TimeoutException
+import logging
+
+# Configure logging
+logging.basicConfig(filename='instahack.log', level=logging.ERROR, 
+                    format='%(asctime)s - %(levelname)s - %(message)s')
 
 def get_user_credentials():
     """
@@ -31,8 +37,14 @@ def login_to_instagram(username, password):
 
         return browser  # Return the browser object for later use
 
+    except NoSuchElementException as e:
+        logging.error(f"Could not find element on the page. {e}")
+        return None
+    except TimeoutException as e:
+        logging.error(f"Timeout while waiting for page to load. {e}")
+        return None
     except Exception as e:
-        print(f"Error during login: {e}")
+        logging.error(f"An unexpected error occurred during login: {e}")
         return None
 
 def main():
