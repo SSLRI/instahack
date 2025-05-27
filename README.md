@@ -5,7 +5,7 @@
 
 ## Install
 ```bash
-git clone https://github.com/yourname/instahack.git
+git clone https://github.com/sslri/instahack.git
 cd instahack
 bash setup.sh
 ```
@@ -52,7 +52,7 @@ CookieAuthentication 1
 ```bash
 pkg update && pkg upgrade -y
 pkg install python git tor nano rust -y
-git clone https://github.com/yourname/instahack.git
+git clone https://github.com/sslri/instahack.git
 cd instahack
 bash setup.sh
 python main.py
