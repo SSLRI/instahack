@@ -3,7 +3,7 @@ echo "[*] Updating system..."
 apt update && apt upgrade -y
 
 echo "[*] Installing Python3, pip, git, tor, rust..."
-apt install -y python git tor rust
+apt install -y python3 python3-pip git tor rustc unzip
 
 echo "[*] Installing Python dependencies..."
 pip install -r requirements.txt --no-cache-dir
