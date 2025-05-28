@@ -1,3 +1,4 @@
 *.pyc
 __pycache__/
 cracked.txt
+attack_result.png
