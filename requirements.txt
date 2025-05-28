@@ -3,3 +3,4 @@ requests[socks]
 stem
 instagrapi
 instaloader
+matplotlib
