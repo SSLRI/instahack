@@ -1,4 +1,0 @@
-instagrapi==2.1.5
-stem
-requests[socks]
-colorama
