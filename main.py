@@ -104,7 +104,7 @@ def attack(username, passwords):
 
 def auto_attack():
     username = input("Target username: ")
-    passwords = load_passwords("password_list_1.txt")
+    passwords = load_passwords("password_list.txt")
     attack(username, passwords)
 
 def manual_attack():
