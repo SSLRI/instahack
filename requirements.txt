@@ -1,0 +1,4 @@
+instagrapi
+stem
+requests[socks]
+colorama
