@@ -14,18 +14,18 @@ ACTIVE_UA = None
 ACTIVE_SESSIONID = None
 
 def load_json_file(path, default=None):
-    """Load JSON data from *path*, creating the file with *default* on failure."""
+    """Load JSON from *path*. On missing file or decode error, save and return *default*."""
     if default is None:
         default = []
     if not os.path.exists(path):
         save_json_file(path, default)
         return default
-    with open(path, "r") as f:
-        try:
+    try:
+        with open(path, "r") as f:
             return json.load(f)
-        except json.JSONDecodeError:
-            save_json_file(path, default)
-            return default
+    except (OSError, json.JSONDecodeError):
+        save_json_file(path, default)
+        return default
 
 def save_json_file(path, data):
     with open(path, "w") as f:
