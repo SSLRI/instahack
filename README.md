@@ -42,6 +42,8 @@ bash setup.sh
 source venv/bin/activate
 python3 main.py
 ```
+- For quick OSINT tasks or when storage is limited, you can run
+  `python3 main_light.py` instead of the full version.
 
 ---
 
