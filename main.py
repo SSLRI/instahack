@@ -13,12 +13,19 @@ SESSIONID_FILE = os.path.join(DATA_DIR, "sessionids.json")
 ACTIVE_UA = None
 ACTIVE_SESSIONID = None
 
-def load_json_file(path, default=[]):
+def load_json_file(path, default=None):
+    """Load JSON data from *path*, creating the file with *default* on failure."""
+    if default is None:
+        default = []
     if not os.path.exists(path):
-        with open(path, "w") as f:
-            json.dump(default, f)
+        save_json_file(path, default)
+        return default
     with open(path, "r") as f:
-        return json.load(f)
+        try:
+            return json.load(f)
+        except json.JSONDecodeError:
+            save_json_file(path, default)
+            return default
 
 def save_json_file(path, data):
     with open(path, "w") as f:
